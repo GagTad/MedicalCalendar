@@ -16,6 +16,8 @@ public:
 	TimePoint getStartTime() const { return startTime; }
 	TimePoint getEndTime() const { return endTime; }
 
+	bool overlapsWith(const Appointment& other) const;
+
 
 private:
 
