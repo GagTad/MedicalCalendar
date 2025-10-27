@@ -12,3 +12,8 @@ void Appointment::print() const {
 	std::cout << "Duration: " << duration.count() << " minutes" << std::endl;
 	std::cout << "-------------------------" << std::endl;
 }
+
+bool Appointment::overlapsWith(const Appointment& other) const
+{
+	return this->startTime < other.getEndTime() && this->endTime > other.getStartTime();
+}
