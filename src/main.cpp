@@ -1,26 +1,34 @@
-#include <iostream>
-#include "appointment.h"
-#include "schedulemanager.h"
+#include "ScheduleManager.h"
+#include "Doctor.h"
+#include "Patient.h"
+#include <chrono>
+
+int main() {
+  
+    Doctor dr_avagyan(1, "Avagyan");
+    Doctor dr_petrosyan(2, "Petrosyan");
+    Patient patient_aram(101, "Aram");
+    Patient patient_anna(102, "Anna");
+
+    ScheduleManager manager;
+    TimePoint now = std::chrono::system_clock::now();
+
+   
+    manager.addAppointment(now, now + std::chrono::minutes(45), &dr_avagyan, &patient_aram, "Initial consultation");
+
+    
+    manager.addAppointment(now, now + std::chrono::minutes(30), &dr_petrosyan, &patient_anna, "Dental cleaning");
+    std::cout << std::endl;
+    std::cout << "--- Testing Doctor-Specific Conflicts ---";
+    std::cout << std::endl;
+    
+    manager.addAppointment(now + std::chrono::minutes(30), now + std::chrono::minutes(60), &dr_avagyan, &patient_anna, "Follow-up");
+
+ 
+    manager.addAppointment(now + std::chrono::minutes(45), now + std::chrono::minutes(90), &dr_avagyan, &patient_anna, "X-Ray results review");
 
 
-int main()
-{
-	ScheduleManager manager;
+    manager.printAllAppointments();
 
-
-	TimePoint now = std::chrono::system_clock::now();
-
-	manager.addAppointment(now, now + std::chrono::minutes(60), "Consultation with Dr. Avagyan"); //0-60 min
-	std::cout << std::endl;
-	manager.addAppointment(now + std::chrono::minutes(90), now + std::chrono::minutes(120), "Dental check-up with Dr. Petrosyan"); //  90-120 min
-	std::cout << std::endl;
-	manager.addAppointment(now + std::chrono::minutes(30), now + std::chrono::minutes(75), "CONFLICT A (30-75 min)");
-	std::cout << std::endl;
-	manager.addAppointment(now + std::chrono::minutes(15), now + std::chrono::minutes(45), "CONFLICT B (15-45 min)");
-	std::cout << std::endl;
-	manager.addAppointment(now + std::chrono::minutes(60), now + std::chrono::minutes(90), "Meeting 3 (60-90 min)");
-	std::cout << std::endl;
-	manager.printAllAppointments();
-
-	return 0;
+    return 0;
 }
